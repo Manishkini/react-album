@@ -100,7 +100,7 @@ function Album({ album: { id, title, userId }, dispatch }) {
         <button className="text-[#4C3575]"> */}
             <img
               className="text-[#4C3575] cursor-pointer"
-              src="https://cdn-icons.flaticon.com/png/512/2874/premium/2874821.png?token=exp=1656868081~hmac=c34366eb3f34753eb3c74c358dc0522d"
+              src="https://cdn-icons-png.flaticon.com/512/3096/3096687.png"
               width={25}
               onClick={() => handleDelete()}
             />
