@@ -7,11 +7,19 @@ const albumSlicer = createSlice({
   },
   reducers: {
     getAllAlbums: (state, action) => {
-      state.albums = action.payload;
+      state.albums = [...state.albums, ...action.payload];
     },
-    createAlbum: (state, action) => {},
-    updateAlbum: (state, action) => {},
-    deleteAlbum: (state, action) => {},
+    createAlbum: (state, { payload }) => {
+      state.albums.push(payload);
+    },
+    updateAlbum: (state, { payload: { id, title } }) => {
+      const albumIndex = state.albums.findIndex((obj) => obj.id === id);
+      state.albums[albumIndex].title = title;
+    },
+    deleteAlbum: (state, { payload: id }) => {
+      const filterdAlbums = state.albums.filter((obj) => obj.id !== id);
+      state.albums = filterdAlbums;
+    },
   },
 });
 

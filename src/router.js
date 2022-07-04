@@ -10,16 +10,6 @@ const routes = [
     Component: lazy(() => import('./pages/album')),
     extact: true,
   },
-  {
-    path: '/album/create',
-    Component: lazy(() => import('./pages/album/create-album')),
-    extact: true,
-  },
-  {
-    path: '/album/update',
-    Component: lazy(() => import('./pages/album/update-album')),
-    extact: true,
-  },
 ];
 
 function router(props) {

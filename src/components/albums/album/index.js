@@ -1,38 +1,54 @@
 import React, { useState } from 'react';
 import { updateAlbum, deleteAlbum } from '../../../redux/reducers';
+import { toast } from 'react-toastify';
 
 function Album({ album: { id, title, userId }, dispatch }) {
   const [isEdit, setIsEdit] = useState(false);
   const [customTitle, setCustomTitle] = useState(title || '');
 
-  const handleSubmit = () => {
-    fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({
-        id,
-        title: customTitle,
-        userId,
-      }),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(updateAlbum(res));
+  const handleSubmit = async () => {
+    await toast.promise(
+      fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          id,
+          title: customTitle,
+          userId,
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
       })
-      .catch((err) => console.log(err));
+        .then((res) => res.json())
+        .then((res) => {
+          dispatch(updateAlbum(res));
+          setIsEdit(false);
+        })
+        .catch((err) => console.log(err)),
+      {
+        pending: 'Updating the album...',
+        success: 'Album updated successfully! 👌',
+        error: 'Something went wrong 🤯',
+      }
+    );
   };
 
-  const handleDelete = () => {
-    fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
-      method: 'DELETE',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch(deleteAlbum(id));
+  const handleDelete = async () => {
+    await toast.promise(
+      fetch(`https://jsonplaceholder.typicode.com/albums/${id}`, {
+        method: 'DELETE',
       })
-      .catch((err) => console.log(err));
+        .then((res) => res.json())
+        .then((res) => {
+          dispatch(deleteAlbum(id));
+        })
+        .catch((err) => console.log(err)),
+      {
+        pending: 'Deleting the album...',
+        success: 'Album deleted successfully! 👌',
+        error: 'Something went wrong 🤯',
+      }
+    );
   };
 
   return (
@@ -68,6 +84,7 @@ function Album({ album: { id, title, userId }, dispatch }) {
       ) : (
         <div className="flex flex-row gap-4 bg-[#5B4B8A] rounded-sm text-white">
           <div className="flex flex-col h-48 gap-8 justify-center flex-grow pl-5">
+            <strong>{`Id: ${id}`}</strong>
             <strong>{`Title: ${title}`}</strong>
             <strong>{`User-id: ${userId}`}</strong>
           </div>
